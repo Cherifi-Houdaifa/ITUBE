@@ -1,5 +1,18 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./styles/App.css";
+import NavBar from "./components/NavBar";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
 
 export default function App () {
-    return <div>Yo mama</div>
+    return (
+        <Router>
+            <NavBar />
+            <Routes>
+                <Route path="/" element={<Home />}/>
+                <Route path="/login" element={<Login />}/>
+            </Routes>
+        </Router>
+    )
 }

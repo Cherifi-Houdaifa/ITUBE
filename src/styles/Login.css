@@ -1,0 +1,27 @@
+div.login-content {
+    height: 100vh;
+    background-color: #deddff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+div.login-content > div {
+    display: inline-block;
+    outline: 0;
+    cursor: pointer;
+    border: none;
+    padding: 0 56px;
+    height: 45px;
+    line-height: 45px;
+    border-radius: 7px;
+    background-color: #8c61ff;
+    color: white;
+    font-weight: 400;
+    font-size: 16px;
+    box-shadow: 0 4px 14px 0 #bcbaff63;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+div.login-content > div:hover {
+    background: #8c61ffe6;
+    box-shadow: 0 6px 20px #bcbaff3b;
+}
