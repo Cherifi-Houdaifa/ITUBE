@@ -6,7 +6,7 @@ import {
     signOut,
 } from 'firebase/auth';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
-import { addDoc, collection, doc, Firestore, getFirestore, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, doc, Firestore, getDocs, getFirestore, limit, orderBy, query, serverTimestamp } from "firebase/firestore";
 
 const config = {
     apiKey: process.env.apiKey,
@@ -39,19 +39,23 @@ export function logOut() {
     signOut(auth);
 }
 
-export async function uploadVideo(title, file) {
+export async function uploadVideo(title, file, thumbnail) {
     try {
         const videoRef = ref(storage, `${auth.currentUser.uid}/${title}.mp4`);
-
+        const thumbnailRef = ref(storage, `${auth.currentUser.uid}/${thumbnail.name}`);
+        
         // upload to storage
         await uploadBytes(videoRef, file);
+        await uploadBytes(thumbnailRef, thumbnail);
 
-        const url = await getDownloadURL(videoRef);
+        const videoUrl = await getDownloadURL(videoRef);
+        const thumbnailUrl = await getDownloadURL(thumbnailRef);
         // add it to firestore
         const result = await addDoc(collection(db, "videos"), {
             uid: auth.currentUser.uid,
             title: title,
-            url: url,
+            url: videoUrl,
+            thumbnail: thumbnailUrl,
             date: serverTimestamp(),
         })
         console.log(result.id);
@@ -59,4 +63,9 @@ export async function uploadVideo(title, file) {
     } catch (error) {
         throw error;
     }
+}
+export async function getVideos () {
+    const q = query(collection(db, "videos"), orderBy("date", "asc"), limit(20));
+    const docs = await getDocs(q);
+    return docs;
 }

@@ -1,18 +1,47 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase';
-import { onAuthStateChanged } from 'firebase/auth';
+import { getVideos } from '../firebase';
+import '../styles/Home.css';
 
 export default function Home() {
+    const [videos, setVideos] = useState({});
     const navigate = useNavigate();
+
     useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                
-            } else {
-                navigate("/login");
-            }
-        });
+        const fn = async () => {
+            const result = await getVideos();
+            setVideos(result);
+        };
+        fn();
     }, []);
-    return <div>Home</div>;
+
+    return (
+        <div className="home-content">
+            {videos.docs
+                ? videos.docs.map((video, index) => {
+                      return (
+                          <VideoCard
+                              key={index}
+                              title={video.data().title}
+                              thumbnail={video.data().thumbnail}
+                              onClick={() => {
+                                  navigate(`/watch/${video.id}`);
+                              }}
+                          />
+                      );
+                  })
+                : null}
+        </div>
+    );
+}
+
+function VideoCard({ title, thumbnail, onClick }) {
+    return (
+        <div className="video" onClick={onClick}>
+            <div className="image">
+                <img src={thumbnail} alt="Video Thumbnail" />
+            </div>
+            <p className="title">{title}</p>
+        </div>
+    );
 }

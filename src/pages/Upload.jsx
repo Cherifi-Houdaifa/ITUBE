@@ -1,20 +1,22 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import loadingGif from '../assets/loading.gif';
-import { uploadVideo } from "../firebase";
+import { uploadVideo } from '../firebase';
 import '../styles/Upload.css';
 
 export default function Upload() {
     const [titleInput, setTitleInput] = useState('');
     const [currentFile, setCurrentFile] = useState();
+    const [currentThumbnail, setCurrentThumbnail] = useState();
     const [loading, setLoading] = useState(false);
-    const fileInputRef = useRef();
+    const videoInputRef = useRef();
+    const thumbnailInputRef = useRef();
 
     const navigate = useNavigate();
 
-    const fileClickHandler = (event) => {
-        fileInputRef.current.click();
-        fileInputRef.current.addEventListener('change', (e) => {
+    const videoClickHandler = (event) => {
+        videoInputRef.current.click();
+        videoInputRef.current.addEventListener('change', (e) => {
             if (e.target.value === '' || e.target.value === null) {
                 console.log('this does not count');
                 return;
@@ -30,7 +32,7 @@ export default function Upload() {
                 return;
             }
             if (e.target.files[0].size / 1024 / 1024 > 100) {
-                alert('File Too Big\nMaximum File Size Allowed is 3MB');
+                alert('File Too Big\nMaximum File Size Allowed is 100MB');
                 e.target.value = null;
                 return;
             }
@@ -38,18 +40,48 @@ export default function Upload() {
         });
     };
 
+    const thumbnailClickHandler = (event) => {
+        thumbnailInputRef.current.click();
+        thumbnailInputRef.current.addEventListener('change', (e) => {
+            if (e.target.value === '' || e.target.value === null) {
+                console.log('this does not count');
+                return;
+            }
+            if (!/(\.png|\.jpeg|\.jpg)$/i.test(e.target.value)) {
+                alert('Allowed File Extensions Are: png, jpeg, jpg');
+                e.target.value = null;
+                return;
+            }
+            if (!e.target.files[0]) {
+                alert('You Should Upload A File');
+                e.target.value = null;
+                return;
+            }
+            if (e.target.files[0].size / 1024 / 1024 > 3) {
+                alert('File Too Big\nMaximum File Size Allowed is 3MB');
+                e.target.value = null;
+                return;
+            }
+            setCurrentThumbnail(e.target.files[0]);
+        });
+    };
+
     const uploadClickHandler = async (e) => {
-        if (!titleInput || titleInput === "") {
-            alert("You must specify a title");
+        if (!titleInput || titleInput === '') {
+            alert('You must specify a title');
             return;
         }
-        if (!currentFile || currentFile === "") {
-            alert("You must Choose A file");
+        if (!currentThumbnail || currentThumbnail === '') {
+            alert('You must Choose A Thumbnail');
             return;
         }
-        setLoading(true)
-        await uploadVideo(titleInput, currentFile);
-        navigate("/");
+        if (!currentFile || currentFile === '') {
+            alert('You must Choose A Video');
+            return;
+        }
+        setLoading(true);
+        await uploadVideo(titleInput, currentFile, currentThumbnail);
+        navigate('/');
     };
 
     return (
@@ -74,14 +106,27 @@ export default function Upload() {
                     <input
                         type="file"
                         hidden
-                        ref={fileInputRef}
+                        ref={thumbnailInputRef}
+                        accept="image/png, image/jpeg, image/png"
+                    />
+
+                    <input
+                        type="button"
+                        value="Choose Thumbnail"
+                        onClick={thumbnailClickHandler}
+                    />
+
+                    <input
+                        type="file"
+                        hidden
+                        ref={videoInputRef}
                         accept="video/mp4"
                     />
 
                     <input
                         type="button"
                         value="Choose Video"
-                        onClick={fileClickHandler}
+                        onClick={videoClickHandler}
                     />
                     <input
                         type="button"
