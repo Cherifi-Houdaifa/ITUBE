@@ -1,11 +1,18 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUser } from '../firebase';
+import { auth } from '../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function Home() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     useEffect(() => {
-        getUser() || navigate("/login");
-    })
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                
+            } else {
+                navigate("/login");
+            }
+        });
+    }, []);
     return <div>Home</div>;
 }

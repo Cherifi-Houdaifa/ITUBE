@@ -1,0 +1,66 @@
+.upload-content {
+    height: calc(100vh - 55px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #deddff;
+}
+.upload-content > div {
+    display: flex;
+    flex-direction: column;
+}
+.upload-content > div > input {
+    margin: 10px;
+}
+.upload-content > div > input[type='button'] {
+    display: inline-block;
+    outline: 0;
+    cursor: pointer;
+    border: none;
+    padding: 0 56px;
+    height: 45px;
+    line-height: 45px;
+    border-radius: 7px;
+    background-color: #8c61ff;
+    color: white;
+    font-weight: 400;
+    font-size: 16px;
+    box-shadow: 0 4px 14px 0 #bcbaff63;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.upload-content > div > input[type='button']:hover {
+    background: #8c61ffe6;
+    box-shadow: 0 6px 20px #bcbaff3b;
+}
+.upload-content > div > input[type="text"] {
+    
+    font-size: 14px;
+    border-radius: 6px;
+    line-height: 1.5;
+    padding: 5px 10px;
+    transition: box-shadow 100ms ease-in, border 100ms ease-in, background-color 100ms ease-in;
+    border: 2px solid #bcbaff;
+    color: rgb(14, 14, 16);
+    background: #bcbaff;
+    display: block;
+    height: 36px;
+    outline: none;
+}
+.upload-content > div > input[type="text"]:hover {
+    border-color: #ccc;
+}
+.upload-content > div > input[type="text"]:focus{
+    border-color: #9147ff;
+    background: #fff;
+}
+.upload-content > div > div.image {
+    aspect-ratio: 1 / 1;
+    width: max(33vw, 300px);
+}
+.upload-content > div > div.image > img {
+    width: 100%;
+}
+.upload-content > div > p {
+    font-size: min(8vw, 2.4rem);
+    color: #5552b3;
+}

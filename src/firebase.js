@@ -1,5 +1,13 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, browserLocalPersistence, setPersistence } from "firebase/auth";
+import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    signOut,
+} from 'firebase/auth';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { addDoc, collection, doc, Firestore, getFirestore, serverTimestamp } from "firebase/firestore";
+
 const config = {
     apiKey: process.env.apiKey,
     authDomain: process.env.authDomain,
@@ -13,14 +21,42 @@ const config = {
 const app = initializeApp(config);
 
 export const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
 
-export async function logIn () {
-    return await signInWithPopup(auth, provider);
+const storage = getStorage(app);
+
+const db = getFirestore(app);
+
+export async function logIn() {
+    try {
+        const provider = new GoogleAuthProvider();
+        const user = await signInWithPopup(auth, provider);
+        return user;
+    } catch (error) {
+        throw error;
+    }
 }
-export function logOut () {
+export function logOut() {
     signOut(auth);
 }
-export function getUser () {
-    return auth.currentUser;
+
+export async function uploadVideo(title, file) {
+    try {
+        const videoRef = ref(storage, `${auth.currentUser.uid}/${title}.mp4`);
+
+        // upload to storage
+        await uploadBytes(videoRef, file);
+
+        const url = await getDownloadURL(videoRef);
+        // add it to firestore
+        const result = await addDoc(collection(db, "videos"), {
+            uid: auth.currentUser.uid,
+            title: title,
+            url: url,
+            date: serverTimestamp(),
+        })
+        console.log(result.id);
+        return null;
+    } catch (error) {
+        throw error;
+    }
 }
