@@ -44,6 +44,7 @@ export default function NavBar() {
                     onClick={() => popup.current.classList.toggle('hide')}
                 >
                     <div onClick={() => navigate('/')}>Home</div>
+                    <div onClick={() => navigate('/videos')}>Videos</div>
                     <div onClick={() => navigate('/upload')}>Upload Video</div>
                     <div
                         onClick={() => {

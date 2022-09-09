@@ -1,0 +1,51 @@
+.videos-content {
+    min-height: calc(100vh - 155px);
+    background-color: #deddff;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+}
+.videos-content > header {
+   
+}
+.videos-content > header > h1 {
+    font-weight: 500;
+    font-size: 2.4rem;
+    color: #5552b3;
+    text-align: center;
+}
+.videos-content > div {
+    background-color: #fff;
+    outline: #8c61ff solid 1px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    height: 100px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.videos-content > div > .thumbnail {
+    width: 160px;
+    height: 100%;
+}
+.videos-content > div > .thumbnail > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.videos-content > div > .title {
+    font-size: 2rem;
+    margin-left: 30px;
+}
+.videos-content > div > .remove-btn {
+    margin-left: auto;
+    margin-right: 20px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.videos-content > div > .remove-btn > img {
+    width: 100%;
+    cursor: pointer;
+}

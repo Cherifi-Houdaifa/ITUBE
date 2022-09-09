@@ -1,0 +1,40 @@
+.watch-content {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 55px);
+    background-color: #deddff;
+}
+.watch-content > .video {
+    width: max(50%, 380px);
+    align-self: center;
+    margin-top: 10px;
+}
+.watch-content > .video > video {
+    width: 100%;
+}
+.watch-content > .data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+.watch-content > .data > .pic {
+    aspect-ratio: 1 / 1;
+    width: 50px;
+}
+.watch-content > .data > .pic > img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+.watch-content > .data > p {
+    font-size: 2rem;
+    margin-left: 20px;
+}
+.watch-content > .unavailable {
+    align-self: center;
+    font-size: 3rem;
+    margin-top: 30%;
+    color: #5552b3;
+}

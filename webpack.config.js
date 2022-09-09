@@ -34,6 +34,12 @@ module.exports = {
                     loader: 'babel-loader',
                 },
             },
+            {
+                test: /\.mp4$/i,
+                use: {
+                    loader: 'file-loader'
+                }
+            },
         ],
     },
     plugins: [
