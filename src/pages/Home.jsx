@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getVideos } from '../firebase';
+import { getVideos , auth} from '../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 import '../styles/Home.css';
 
 export default function Home() {
@@ -8,11 +9,18 @@ export default function Home() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                navigate("/login");
+            }
+        })
+
         const fn = async () => {
             const result = await getVideos();
             setVideos(result);
         };
         fn();
+        document.title = `ITube`;
     }, []);
 
     return (

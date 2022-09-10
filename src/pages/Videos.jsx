@@ -1,5 +1,6 @@
 import { onAuthStateChanged } from 'firebase/auth';
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import remove from '../assets/remove.svg';
 import { auth, getUserVideos, deleteVideo } from '../firebase';
 import '../styles/Videos.css';
@@ -7,6 +8,9 @@ import '../styles/Videos.css';
 export default function Videos() {
     const [videos, setVideos] = useState();
     const userId = useRef();
+    const navigate = useNavigate()
+
+
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -14,8 +18,11 @@ export default function Videos() {
                     setVideos(result);
                     userId.current = user.uid;
                 });
+            } else {
+                navigate("/login");
             }
         });
+        document.title = `ITube | Videos`;
     }, []);
 
     const removeBtnHandler = async (id, title, uid) => {

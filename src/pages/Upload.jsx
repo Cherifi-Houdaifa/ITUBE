@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import loadingGif from '../assets/loading.gif';
-import { uploadVideo } from '../firebase';
+import { uploadVideo, auth } from '../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 import '../styles/Upload.css';
 
 export default function Upload() {
@@ -13,6 +14,15 @@ export default function Upload() {
     const thumbnailInputRef = useRef();
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                navigate("/login");
+            }
+        })
+        document.title = `ITube | Upload Video`;
+    }, [])
 
     const videoClickHandler = (event) => {
         videoInputRef.current.click();

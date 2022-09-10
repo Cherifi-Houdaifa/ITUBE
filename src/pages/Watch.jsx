@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getVideo } from '../firebase';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getVideo, auth } from '../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 import '../styles/Watch.css';
 
 export default function Watch() {
     const { id } = useParams();
     const [available, setAvailable] = useState(true);
     const [video, setVideo] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                navigate('/login');
+            }
+        });
         const fn = async () => {
             const result = await getVideo(id);
             if (result.exists()) {
@@ -40,7 +47,9 @@ export default function Watch() {
                         <p>{video.userName}</p>
                     </div>
                 </>
-            ) : <div className='unavailable'>Video Unavailable</div>}
+            ) : (
+                <div className="unavailable">Video Unavailable</div>
+            )}
         </div>
     );
 }
