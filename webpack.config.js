@@ -3,7 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: {
         main: path.resolve(__dirname, './src/index.js'),
     },
@@ -13,7 +13,7 @@ module.exports = {
         clean: true,
         publicPath: '/',
     },
-    devtool: 'eval-source-map',
+    devtool: false,
     resolve: {
         extensions: ['.js', '.jsx', '.json'],
     },
